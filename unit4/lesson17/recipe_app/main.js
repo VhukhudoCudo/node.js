@@ -18,9 +18,9 @@ const db = mongoose.connection;
 
 db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
-}); 
+});
 
-let myQuery = Subscriber.findOne({
+var myQuery = Subscriber.findOne({
   name: "Jon Wexler"
 }).where("email", /wexler/);
 

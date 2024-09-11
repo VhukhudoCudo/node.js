@@ -59,8 +59,8 @@ db.once("open", ()=> {
 //USING PROMISES
 //Option2
 Subscriber.create({
-  name: "Victor Poto",
-  email: "victorseptember@gmail.com"
+  name: "vhukhudo",
+  email: "vhukhudo@gmail.com"
 })
   .then(savedDocument => {
     console.log(savedDocument);
