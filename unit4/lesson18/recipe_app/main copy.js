@@ -44,7 +44,6 @@ app.get("/users", usersController.index, usersController.indexView);
 app.get("/subscribers", subscribersController.index, subscribersController.indexView);
 app.get("/courses", coursesController.index, coursesController.indexView);
 
-
 app.post("/subscribe", subscribersController.saveSubscriber);
 
 app.use(errorController.logErrors);
