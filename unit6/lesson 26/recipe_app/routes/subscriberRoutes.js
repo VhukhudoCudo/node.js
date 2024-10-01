@@ -1,5 +1,7 @@
-const router = require("express").Router();
- const subscribersController = require("../controllers/subscribersController");
+"use strict";
+
+const router = require("express").Router(),
+  subscribersController = require("../controllers/subscribersController");
 
 router.get("/", subscribersController.index, subscribersController.indexView);
 router.get("/new", subscribersController.new);

@@ -1,23 +1,22 @@
 "use strict";
 
-const express = require("express");
-const app = express();
-router = require("./routes/index");
-const layouts = require("express-ejs-layouts");
-const mongoose = require("mongoose");
-const errorController = require("./controllers/errorController");
-const homeController = require("./controllers/homeController");
-const subscribersController = require("./controllers/subscribersController");
-const usersController = require("./controllers/usersController");
-const coursesController = require("./controllers/coursesController");
-const Subscriber = require("./models/subscriber");
-const methodOverride = require("method-override");
-const expressSession = require("express-session");
-const cookieParser = require("cookie-parser");
-const connectFlash = require("connect-flash");
-const expressValidator = require("express-validator");
-const passport = require("passport");
-const User = require("./models/user");
+const express = require("express"),
+  app = express(),
+  router = require("./routes/index"),
+  layouts = require("express-ejs-layouts"),
+  mongoose = require("mongoose"),
+  methodOverride = require("method-override"),
+  expressSession = require("express-session"),
+  cookieParser = require("cookie-parser"),
+  connectFlash = require("connect-flash"),
+  expressValidator = require("express-validator"),
+  passport = require("passport"),
+  errorController = require("./controllers/errorController"),
+  homeController = require("./controllers/homeController"),
+  subscribersController = require("./controllers/subscribersController"),
+  usersController = require("./controllers/usersController"),
+  coursesController = require("./controllers/coursesController"),
+  User = require("./models/user");
 
 mongoose.Promise = global.Promise;
 
@@ -36,49 +35,47 @@ db.once("open", () => {
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
 
-//setting up middleware
-router.use(express.static("public"));
-router.use(layouts);
-router.use(
+app.use(express.static("public"));
+app.use(layouts);
+app.use(
   express.urlencoded({
     extended: false
   })
 );
-router.use(express.json());
-router.use(expressValidator())
-router.use(methodOverride("_method", {
-  methods: ["POST", "GET"]
-}));
 
-router.use(cookieParser("secret_passcode"));
-router.use(expressSession({
-  secret: "secret_passcode",
-  cookie: {
-    maxAge: 4000000
-  },
-  resave: false,
-  saveUninitialized: false
-}));//session uses cookie-parser
+app.use(
+  methodOverride("_method", {
+    methods: ["POST", "GET"]
+  })
+);
 
-router.use(connectFlash());//flash messages
+app.use(express.json());
+app.use(cookieParser("secret_passcode"));
+app.use(
+  expressSession({
+    secret: "secret_passcode",
+    cookie: {
+      maxAge: 4000000
+    },
+    resave: false,
+    saveUninitialized: false
+  })
+);
 
-router.use(passport.initialize());
-router.use(passport.session());
-
+app.use(passport.initialize());
+app.use(passport.session());
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+app.use(connectFlash());
 
-//assign flash messages to local flashMessages variable
-router.use((req, res, next) => {
+app.use((req, res, next) => {
   res.locals.loggedIn = req.isAuthenticated();
   res.locals.currentUser = req.user;
   res.locals.flashMessages = req.flash();
   next();
 });
-
-router.use(homeController.logRequestPaths);
-
+app.use(expressValidator());
 
 app.use("/", router);
 

@@ -1,5 +1,7 @@
-const router = require("express").Router();
- const homeController = require("../controllers/homeController");
+"use strict";
+
+const router = require("express").Router(),
+  homeController = require("../controllers/homeController");
 
 router.get("/", homeController.index);
 router.get("/contact", homeController.contact);
